@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 export class BoardsService {
   constructor(
     @Inject('BOARD_REPOSITORY')
-    private boardREpository: Repository<Board>,
+    private boardRepository: Repository<Board>,
   ) {}
 
   private boards: Board[] = [];
