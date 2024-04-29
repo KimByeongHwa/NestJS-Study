@@ -1,8 +1,9 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
-import { Board, BoardStatus } from './board.model';
+import { Board as BoardModel, BoardStatus } from './board.model';
 import { v1 as uuid } from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { Repository } from 'typeorm';
+import { Board } from './board.entity';
 @Injectable()
 export class BoardsService {
   constructor(
@@ -10,14 +11,14 @@ export class BoardsService {
     private boardRepository: Repository<Board>,
   ) {}
 
-  private boards: Board[] = [];
+  private boards: BoardModel[] = [];
 
-  getAllBoards(): Board[] {
+  getAllBoards(): BoardModel[] {
     return this.boards;
   }
 
   createBoard(createBoardDto: CreateBoardDto) {
-    const board: Board = {
+    const board: BoardModel = {
       id: uuid(),
       title: createBoardDto.title,
       description: createBoardDto.description,
@@ -28,7 +29,7 @@ export class BoardsService {
     return board;
   }
 
-  getBoardById(id: string): Board {
+  getBoardById(id: string): BoardModel {
     const found = this.boards.find((board) => board.id === id);
 
     if (!found) {
@@ -44,7 +45,7 @@ export class BoardsService {
     this.boards.filter((board) => board.id !== found.id);
   }
 
-  updateBoardStatus(id: string, status: BoardStatus): Board {
+  updateBoardStatus(id: string, status: BoardStatus): BoardModel {
     const board = this.getBoardById(id);
     board.status = status;
     return board;
